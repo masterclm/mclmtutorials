@@ -1,0 +1,24 @@
+Package: mclmtutorials
+Type: Package
+Title: Tutorials for MCLM
+Version: 0.1.0
+Authors@R: c(
+  person("Mariana", "Montes",
+        email = "montesmariana@gmail.com",
+        role = c("aut", "cre"))
+  )
+Description: Collection of tutorials for the mclm package: how to use it,
+  key classes and functions for corpus methods and regular expressions.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.1
+Imports: 
+    learnr (>= 0.10.7.9000)
+Suggests:
+    gradethis (>= 0.2.10.9000),
+    mclm (>= 0.2.5)
+Remotes:  
+    rstudio/learnr,
+    rstudio/gradethis,
+    masterclm/mclm
