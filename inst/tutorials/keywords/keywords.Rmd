@@ -10,6 +10,7 @@ description: >
 library(learnr)
 library(tidyverse)
 library(mclm)
+library(mclmtutorials)
 knitr::opts_chunk$set(echo = FALSE)
 
 stop_list <- read_types("data/stop_list.txt")

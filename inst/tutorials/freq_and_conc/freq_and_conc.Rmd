@@ -11,6 +11,7 @@ library(learnr)
 library(tibble)
 library(ggplot2)
 library(dplyr)
+library(mclmtutorials)
 library(mclm)
 knitr::opts_chunk$set(echo = FALSE)
 

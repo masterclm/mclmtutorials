@@ -10,6 +10,7 @@ description: >
 library(learnr)
 library(gradethis)
 library(mclm)
+library(mclmtutorials)
 library(htmltools)
 knitr::opts_chunk$set(echo = FALSE, comment = "")
 
