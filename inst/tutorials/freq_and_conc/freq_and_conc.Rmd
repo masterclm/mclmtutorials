@@ -21,7 +21,7 @@ stop_list <- read_types("data/stop_list.txt")
 
 ## Setting up
 
-To start with our work, we will load three main packages: {tidyverse} for data wrangling and {mclm} to work with corpora. The function to load packages in R is `library()`:
+To start with our work, we will load two main packages: {tidyverse} for data wrangling and {mclm} to work with corpora. The function to load packages in R is `library()`:
 
 ```{r load-tidyverse, echo=TRUE, eval=FALSE}
 library(tidyverse)
@@ -38,7 +38,7 @@ The `get_fnames()` function takes the path to a directory and creates a list of 
 get_fnames("data/pres_speech/harrison")
 ```
 
-With `fnames_merge()` we can merge two fnames objects. For example, we could create an `my_fnames` variable with the filenames of presidential speeches from the period 1889-1909, i.e. those by Harrison, Cleveland, McKinley and Roosevelt. In the exercise below, fill in the appropriate filenames to add the missing speeches (remember: the folder names are in lowercase!).
+With `fnames_merge()` we can merge two fnames objects. For example, we could create a `my_fnames` variable with the filenames of American presidential speeches from the period 1889-1909, i.e. those by Harrison, Cleveland, McKinley and Roosevelt. In the exercise below, fill in the appropriate filenames to add the missing speeches (remember: the folder names are in lowercase!).
 
 ```{r all-fnames, exercise = TRUE}
 my_fnames <- get_fnames("data/pres_speech/harrison") %>% 
@@ -71,12 +71,12 @@ my_fnames
 ```
 
 Just typing the name of a variable prints it. But you can also refine how to print an {mclm} object by adding arguments to their `print()` method!
-For an fnames object, you can decide how many items you print with the `n` argument, from which position you start printing (with the `from` argument) and whether you want to sort it alphabetically (`sort_order = "alpha"`) or not (`sort_order = "none"`).
+For an fnames object, you can decide how many items you print with the `n` argument, from which position you start printing (with the `from` argument) and whether you want to sort it alphabetically (`sort_order = "alpha"`) or not (`sort_order = "none"`). From version 0.2.7 you can also remove a section of the paths with the `hide_path` argument, e.g. `hide_path="data/pres_speech/"`.
 
 Play around with these arguments to get familiar with them and inspect `my_fnames`!
 
 ```{r, fnames-print, exercise = TRUE, exercise.eval = TRUE}
-print(my_fnames, n = 5, sort_order = "alpha")
+print(my_fnames, n = 5, sort_order = "alpha", hide_path="data")
 ```
 
 ### Quiz time!
@@ -177,12 +177,12 @@ my_flist %>%
   labs(x = "Frequency rank", y = "Absolute frequency")
 ```
 
-We can also plot only the 100 types we inspected:
+We can also plot only the 150 types we inspected:
 
 ```{r freq-plot-top, exercise = TRUE, exercise.eval = TRUE, exercise.setup = "freqlist"}
 my_flist %>%
   as_tibble() %>% # turn freqlist to tibble
-  slice_head(n = 100) %>% # get top 100 items
+  slice_head(n = 150) %>% # get top 100 items
   ggplot(aes(x = rank, y = abs_freq)) + # variables for the axes
   geom_point(alpha = 0.4) + # transparent points
   geom_vline(xintercept = 50, linetype = 2) + # vertical line at rank 50
