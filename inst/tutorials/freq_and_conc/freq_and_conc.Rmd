@@ -278,7 +278,7 @@ my_fnames %>% conc("\\bnation\\b") %>% print()
 
 Suppose you filtered out stop words from a frequency list, but there is still something weird going on... for example, check the 13th type in the cleaned `my_flist`:
 
-```{r flist-drop, exercise = TRUE, exercise.eval = TRUE}
+```{r flist-drop, exercise = TRUE, exercise.eval = TRUE, exercise.setup = "freqlist"}
 my_flist %>%
   drop_types(stop_list)
 ```
