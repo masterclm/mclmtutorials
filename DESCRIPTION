@@ -17,8 +17,7 @@ Imports:
     learnr (>= 0.10.7.9000)
 Suggests:
     gradethis (>= 0.2.10.9000),
-    mclm (>= 0.2.5)
+    mclm (>= 0.2.7)
 Remotes:  
-    rstudio/learnr,
     rstudio/gradethis,
     masterclm/mclm

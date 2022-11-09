@@ -19,7 +19,7 @@ flist1 <- freqlist("data/ca01",
          re_token_splitter = r"--[(?xi)   \s+   ]--")
 ```
 
-## About frequency lists
+## Introduction
 
 Several techniques in corpus linguistics are based on frequency lists. For instance, the function `assoc_scores()`, which we use for keyword analysis and collocation analysis, essentially always draws its information from two frequency lists, viz. a frequency list for the target context and a frequency for the reference context.
 This is most clearly the case in keywords analysis, but even in collocation analysis and collostruction analysis, we essentially work with two frequency lists, viz. the frequency list for the target co-text or the target slot versus the frequency list for other contexts than the target co-text or the target slot.
@@ -60,7 +60,7 @@ What happened? In order to understand this, let's run the following instruction:
 ```
 
 This instruction calls up the documentation for the function `freqlist()`.
-In this documentation, we see that the default value for the argument `re_token_splitter` is `re("[^_\\p{L}\\p{N}\\p{M}'-]+")`.^[In "strings literals" in R, any backslash needs to be doubled. See the regular expressions tutorial (`learnr::run_tutorial("regex", package = "mclm")`) for more information.]
+In this documentation^[You can also go to [the online documentation](https://masterclm.github.io/mclm/reference/freqlist.html).], we see that the default value for the argument `re_token_splitter` is `re("[^_\\p{L}\\p{N}\\p{M}'-]+")`.^[In "strings literals" in R, any backslash needs to be doubled. See the regular expressions tutorial (`learnr::run_tutorial("regex", package = "mclm")`) for more information.]
 Therefore, the above actually states that the default value of `re_token_splitter` is a regular expression, created with `re()`, the value of which is `[^_\p{L}\p{N}\p{M}'-]+`.
  
 An alternative notation in R, using a so-called "raw string", would be `re(r"--[(?xi)   [^_\p{L}\p{N}\p{M}'-]+   ]--")` or, since it is not mandatory to embed the string in `re()`, also `r"--[(?xi)   [^_\p{L}\p{N}\p{M}'-]+   ]--"`.
@@ -68,7 +68,7 @@ Let's break this regular expression down into its components:
 
 - `[^...]+` &#129094; a sequence of one or more characters which can be any character except the one that are listed in the `...` area. The `+` means "one or more repetitions" and the `[^...]` means: "any character that is not listed in `...`".
 
-- `_` &#129094; the character *_* (underscore).
+- `_` &#129094; an underscore.
 
 - `\p{L}` &#129094; any alphabetic character (in any language).
 
@@ -76,9 +76,9 @@ Let's break this regular expression down into its components:
 
 - `\p{M}` &#129094; any diacritic/accent that is added to another character.
 
-- `'` &#129094; the character *'* (apostrophe).
+- `'` &#129094; an apostrophe.
 
-- `-` &#129094; the character *-* (hyphen).
+- `-` &#129094; a hyphen or minus symbol.
 
 In sum, the whole regular expression can be paraphrased as:
 
@@ -106,7 +106,7 @@ The regular expression notation `\s` stands for a whitespace character, such a t
 So how do we read the output we just created?
 
 By default, the items of a recently created frequency list are sorted by (decreasing) frequency. This absolute frequency can be found in the column `abs_freq`. The frequency rank of the items can be found in the column `rank`. The column `type` contains the actual items. The column `nrm_freq` finally contains a normalized frequency, i.e. the number of occurrences per 10,000 tokens.
-For instance, for *the/at*, the normalized frequency is calculated as:
+For instance, for *the/at*, the normalized frequency is calculated^[In code: `flist1[["the/at"]]] / tot_n_tokens(flist1) * 10000`.] as:
 $$(`r flist1[["the/at"]]` / `r tot_n_tokens(flist1)`) * 10000 \approx `r round(flist1[["the/at"]]/tot_n_tokens(flist1)*10000, 3)`$$
 
 In other words, roughly 7% of the tokens are instances of *the/at*. The reason why in corpus linguistics we typically (but not exclusively) work with 'number of occurrences per 10,000 tokens' is because working with proportions, e.g. (`r flist1[["the/at"]]` / `r tot_n_tokens(flist1)`), would often have us working with really small numbers.
@@ -129,9 +129,9 @@ quiz(
 )
 ```
 
-You can also *view* the frequency list by typing, on the console, `View(flist)`, `flist` being the name of your frequency list, i.e. the variable in which it was stored. In addition, you can save your frequency list to file with `write_freqlist(flist, "my_first_freqlist.tab")` (with whatever path you want to store it to) and then read it back, in a different R session for example, with `flist <- write_freqlist("my_first_freqlist.tab")`.
+You can also *view* the frequency list by typing, on the console, `View(flist)`, `flist` being the name of your frequency list, i.e. the variable in which it was stored. In addition, you can save your frequency list to file with `write_freqlist(flist, "my_first_freqlist.tab")` (with whatever path you want to store it to) and then read it back, in a different R session for example, with `flist <- read_freqlist("my_first_freqlist.tab")`.
 
-It is also possible open the frequency list with e.g. LibreOffice Calc, since the frequency list is just a simple 'tab separated values' file. In LibreOffice Calc, just choose `File | Open...`, select the file
+It is also possible to open the frequency list with e.g. LibreOffice Calc (or Excel), since the frequency list is just a simple 'tab separated values' file. In LibreOffice Calc, just choose `File | Open...`, select the file
 "my_first_freqlist.tab", and in the `Text import` window just click `OK`.
 
 Next, we will explore some alternative ways to build frequency lists for the same corpus and thus how to work with the `freqlist()` function.
@@ -152,7 +152,7 @@ In the new frequency list the POS tags have disappeared. The arguments `re_token
 
 - `[^/]+` &#129094; a sequence of one or more characters that are not slash characters.
 
-- `/` &#129094; the character / (slash).
+- `/` &#129094; a slash.
 
 - `(...)` &#129094; ..., interpreted as a 'group'.
 
@@ -162,7 +162,7 @@ So our regular expression looks for:
 
 In this version of the Brown corpus, any token will match that pattern as a whole. The parentheses in the regular expression don't match anything by themselves: they only indicate that whatever matches their content must be trated as a "group". This is particularly handy when writing replacement strings, since we can use `\1` to refer to the match for the first group, `\2` to refer to the match for the second group, etc. (Note that these are **not** regular expressions!)
 
-Therefore, for this corpus and this value of `re_token_transf_in`, any mention of `\1` in `token_transf_out` will reproduce the contents of the first group, i.e. the wordform, and any mention of `\2` will reproduce the contents of the second group, i.e. the POS tag.
+Therefore, for this corpus and this value of `re_token_transf_in`, any mention of `\1` in `token_transf_out` will reproduce the contents of the first group, i.e. the word form, and any mention of `\2` will reproduce the contents of the second group, i.e. the POS tag.
 Other terms will be reproduced as is. Below are some transformations of *the/at* given the `re_token_transf_in` value of before:
 
 - `r"--[\1-\1]--"` &#129154; the-the
@@ -188,7 +188,7 @@ b <- change_transf(r"--[\1_\2 ]--")
 c <- change_transf(r"--[<w pos="\2">\1</w>]--")
 ```
 
-In the following exercises you can run the code as many times as you want by clicking on `Run Code`, and then submit your solution when you're ready by clicking on `Submit Answer`.
+In the following exercises you can run the code as many times as you want by clicking on **Run code**, and then submit your solution when you're ready by clicking on **Submit Answer**.
 
 1. In the following code box, adapt the regular expression in `token_transf_out` so that you only capture POS-tags instead of wordforms.
 
@@ -333,9 +333,9 @@ Instead of looking at a substantial number or keywords, we zoom in on the keynes
 
 <!-- > Give me a copy of scores in which you only keep the rows with the type name *the/at*. -->
 
-First we use the `re_drop_token` argument. Run the following code to obtain the keyness measure for *the/at* according to this first approach.
+First we use the `re_drop_token` argument. We run the following code to obtain the keyness measure for *the/at* according to this first approach.
 
-```{r key1, echo = TRUE}
+```{r key1, exercise = TRUE, exercise.eval = TRUE}
 flist_ca01 <- freqlist("data/ca01", 
   re_token_splitter = r"--[(?xi)   \s+          ]--",
   re_drop_token     = r"--[(?xi)   / [^\p{L}]   ]--")
@@ -351,7 +351,7 @@ scores_a <- assoc_scores(flist_ca01, flist_ca02) %>%
 
 In the output returned by the previous instruction, we see that for *the/at*, $a$ is `r scores_a$a`, $b$ is `r scores_a$b`, $c$ is `r scores_a$c`, and $d$ is `r scores_a$d`. Now let's do the same thing using the other strategy, i.e. using the `keep_re()` method.
 
-```{r key2, echo = TRUE}
+```{r key2, exercise = TRUE, exercise.eval = TRUE}
 flist_ca01 <- freqlist("data/ca01", 
   re_token_splitter = r"--[(?xi)   \s+          ]--") %>%
   keep_re(r"--[(?xi)   / [\p{L}]   ]--")
@@ -531,7 +531,7 @@ flist_merged[1:6, invert = TRUE]
 
 #### Let's practice!
 
-In the following exercises you can run the code as many times as you want by clicking on `Run Code`, and then submit your solution when you're ready by clicking on `Submit Answer`.
+In the following exercises you can run the code as many times as you want by clicking on **Run code**, and then submit your solution when you're ready by clicking on **Submit Answer**.
 
 1. In the following code box, select the 20 most frequent tokens in `flist_merged`.
 
@@ -623,7 +623,7 @@ Work on the previous exercises to answer the following questions:
 
 #### Let's practice!
 
-In the following exercises you can run the code as many times as you want by clicking on `Run Code`, and then submit your solution when you're ready by clicking on `Submit Answer`.
+In the following exercises you can run the code as many times as you want by clicking on **Run code**, and then submit your solution when you're ready by clicking on **Submit Answer**.
 
 1. In the following code box, subset `flist_merged` to only see the *a/at* type.
 
@@ -730,7 +730,7 @@ We might want to refine the search, for example by limiting words whose part-of-
 
 #### Let's practice!
 
-In the following exercises you can run the code as many times as you want by clicking on `Run Code`, and then submit your solution when you're ready by clicking on `Submit Answer`.
+In the following exercises you can run the code as many times as you want by clicking on **Run code**, and then submit your solution when you're ready by clicking on **Submit Answer**.
 
 1. In the following code box, select the items from `flist_merged` whose part of speech is exactly *nn*.
 
@@ -876,7 +876,7 @@ However, this default order is not the only option. The `sort()` method allows u
 
 ### Some practice!
 
-In the following exercises you can run the code as many times as you want by clicking on `Run Code`, and then submit your solution when you're ready by clicking on `Submit Answer`.
+In the following exercises you can run the code as many times as you want by clicking on **Run code**, and then submit your solution when you're ready by clicking on **Submit Answer**.
 
 1. In the following code box, select the 10 most frequent items in `flist_merged` and sort them alphabetically (*A* before *Z*).
 
